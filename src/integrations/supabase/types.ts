@@ -189,8 +189,13 @@ export type Database = {
           id: string
           is_published: boolean
           owner_id: string
+          partner_one_name: string
+          partner_one_role: string
+          partner_two_name: string
+          partner_two_role: string
           pix: Json
           reception: Json
+          setup_completed: boolean
           slug: string
           story: string
           theme: Json
@@ -207,8 +212,13 @@ export type Database = {
           id?: string
           is_published?: boolean
           owner_id: string
+          partner_one_name?: string
+          partner_one_role?: string
+          partner_two_name?: string
+          partner_two_role?: string
           pix?: Json
           reception?: Json
+          setup_completed?: boolean
           slug: string
           story?: string
           theme?: Json
@@ -225,8 +235,13 @@ export type Database = {
           id?: string
           is_published?: boolean
           owner_id?: string
+          partner_one_name?: string
+          partner_one_role?: string
+          partner_two_name?: string
+          partner_two_role?: string
           pix?: Json
           reception?: Json
+          setup_completed?: boolean
           slug?: string
           story?: string
           theme?: Json

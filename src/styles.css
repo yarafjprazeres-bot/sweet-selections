@@ -63,6 +63,16 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+.wedding-theme { --wedding-display: "Cormorant Garamond", serif; --wedding-body: "Manrope", sans-serif; }
+.wedding-theme h1, .wedding-theme h2, .wedding-theme h3 { font-family: var(--wedding-display); }
+.wedding-theme { font-family: var(--wedding-body); }
+.wedding-font-modern { --wedding-display: "DM Sans", sans-serif; --wedding-body: "DM Sans", sans-serif; }
+.wedding-font-classic { --wedding-display: "Libre Baskerville", serif; --wedding-body: "Manrope", sans-serif; }
+.wedding-palette-olive { --background: oklch(0.985 0.009 88); --foreground: oklch(0.25 0.035 151); --primary: oklch(0.34 0.065 151); --primary-foreground: oklch(0.985 0.009 88); --secondary: oklch(0.93 0.028 83); --accent: oklch(0.68 0.075 45); }
+.wedding-palette-rose { --background: oklch(0.98 0.012 20); --foreground: oklch(0.27 0.035 15); --primary: oklch(0.45 0.095 15); --primary-foreground: oklch(0.98 0.012 20); --secondary: oklch(0.93 0.035 35); --accent: oklch(0.66 0.11 25); }
+.wedding-palette-ocean { --background: oklch(0.98 0.012 205); --foreground: oklch(0.26 0.035 235); --primary: oklch(0.39 0.07 220); --primary-foreground: oklch(0.98 0.012 205); --secondary: oklch(0.92 0.035 190); --accent: oklch(0.67 0.09 175); }
+.wedding-palette-terracotta { --background: oklch(0.98 0.012 75); --foreground: oklch(0.28 0.04 45); --primary: oklch(0.45 0.1 42); --primary-foreground: oklch(0.98 0.012 75); --secondary: oklch(0.92 0.045 70); --accent: oklch(0.62 0.12 55); }
+
 :root {
   --radius: 0.375rem;
   --background: oklch(0.985 0.009 88);
