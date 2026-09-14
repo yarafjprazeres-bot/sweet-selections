@@ -1,4 +1,4 @@
-export type Venue = { local: string; data: string; hora: string; endereco: string; fotos: string[] };
+export type Venue = { local: string; data: string; hora: string; endereco: string; maps_url: string; fotos: string[] };
 export type Pix = { key: string; name: string; city: string };
 export const weddingSections = ["story", "ceremony", "reception", "rsvp", "gifts", "contact"] as const;
 export type WeddingSection = (typeof weddingSections)[number];
@@ -20,11 +20,11 @@ export type Wedding = {
   partner_two_role: string; setup_completed: boolean; theme: WeddingTheme;
 };
 
-export const fallbackVenue: Venue = { local: "", data: "", hora: "", endereco: "", fotos: [] };
+export const fallbackVenue: Venue = { local: "", data: "", hora: "", endereco: "", maps_url: "", fotos: [] };
 export function asVenue(value: unknown): Venue {
   if (!value || typeof value !== "object") return fallbackVenue;
   const v = value as Partial<Venue>;
-  return { local: v.local ?? "", data: v.data ?? "", hora: v.hora ?? "", endereco: v.endereco ?? "", fotos: Array.isArray(v.fotos) ? v.fotos : [] };
+  return { local: v.local ?? "", data: v.data ?? "", hora: v.hora ?? "", endereco: v.endereco ?? "", maps_url: v.maps_url ?? "", fotos: Array.isArray(v.fotos) ? v.fotos : [] };
 }
 export function asPix(value: unknown): Pix {
   if (!value || typeof value !== "object") return { key: "", name: "", city: "" };
@@ -77,7 +77,30 @@ export function weddingThemeStyle(theme: WeddingTheme) {
 }
 export function formatWeddingDate(value: string) {
   const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? "" : date.toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" });
+  return Number.isNaN(date.getTime()) ? "" : date.toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric", timeZone: "America/Sao_Paulo" });
+}
+export function weddingDatePart(value: string) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  const parts = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(date);
+  const part = (type: Intl.DateTimeFormatPartTypes) => parts.find(item => item.type === type)?.value ?? "";
+  return `${part("year")}-${part("month")}-${part("day")}`;
+}
+export function weddingTimePart(value: string) {
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? "" : new Intl.DateTimeFormat("pt-BR", { timeZone: "America/Sao_Paulo", hour: "2-digit", minute: "2-digit", hour12: false }).format(date);
+}
+export function combineWeddingDateTime(current: string, date = weddingDatePart(current), time = weddingTimePart(current)) {
+  if (!date || !time) return current;
+  return new Date(`${date}T${time}:00-03:00`).toISOString();
+}
+export function safeGoogleMapsUrl(value: string) {
+  if (!value.trim()) return "";
+  try {
+    const url = new URL(value);
+    const host = url.hostname.toLowerCase();
+    return host === "maps.app.goo.gl" || host === "maps.google.com" || host === "www.google.com" || host.endsWith(".google.com") ? url.toString() : "";
+  } catch { return ""; }
 }
 export async function resolveWeddingPhoto(path: string) {
   if (!path || /^https?:\/\//.test(path)) return path;
