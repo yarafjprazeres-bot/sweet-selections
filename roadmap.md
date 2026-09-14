@@ -6,9 +6,9 @@
 - [x] Aplicar aparência e ordem no site público
 - [x] Verificar fluxos em desktop e celular
 
-- [ ] Separar campos de data e horário sem alteração de fuso
-- [ ] Adicionar link seguro do Google Maps aos locais
-- [ ] Criar função e acesso administrativo seguro
-- [ ] Criar página administrativa com visão dos casais
+- [x] Separar campos de data e horário sem alteração de fuso
+- [x] Adicionar link seguro do Google Maps aos locais
+- [x] Criar função e acesso administrativo seguro
+- [x] Criar página administrativa com visão dos casais
 - [ ] Verificar fluxos novos e permissões
-- [ ] Adicionar criação de conta por e-mail e senha
+- [x] Adicionar criação de conta por e-mail e senha
