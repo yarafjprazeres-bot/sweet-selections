@@ -4,7 +4,8 @@ export const weddingSections = ["story", "ceremony", "reception", "rsvp", "gifts
 export type WeddingSection = (typeof weddingSections)[number];
 export type WeddingTheme = {
   template: "garden" | "editorial" | "classic";
-  palette: "olive" | "rose" | "ocean" | "terracotta";
+  palette: "olive" | "rose" | "ocean" | "terracotta" | "custom";
+  customColors: { primary: string; accent: string; background: string };
   font: "romantic" | "modern" | "classic";
   icons: "minimal" | "floral" | "classic";
   heroAlign: "left" | "center";
@@ -30,20 +31,49 @@ export function asPix(value: unknown): Pix {
   const v = value as Partial<Pix>;
   return { key: v.key ?? "", name: v.name ?? "", city: v.city ?? "" };
 }
-export const defaultTheme: WeddingTheme = { template: "garden", palette: "olive", font: "romantic", icons: "minimal", heroAlign: "center", sections: [...weddingSections], hidden: [] };
+export const defaultTheme: WeddingTheme = { template: "garden", palette: "olive", customColors: { primary: "#365b45", accent: "#b87858", background: "#fbf8f1" }, font: "romantic", icons: "minimal", heroAlign: "center", sections: [...weddingSections], hidden: [] };
 export function asTheme(value: unknown): WeddingTheme {
   if (!value || typeof value !== "object") return defaultTheme;
   const v = value as Partial<WeddingTheme>;
   const sections = Array.isArray(v.sections) ? v.sections.filter((item): item is WeddingSection => weddingSections.includes(item as WeddingSection)) : [];
   return {
     template: ["garden", "editorial", "classic"].includes(v.template ?? "") ? v.template as WeddingTheme["template"] : "garden",
-    palette: ["olive", "rose", "ocean", "terracotta"].includes(v.palette ?? "") ? v.palette as WeddingTheme["palette"] : "olive",
+    palette: ["olive", "rose", "ocean", "terracotta", "custom"].includes(v.palette ?? "") ? v.palette as WeddingTheme["palette"] : "olive",
+    customColors: {
+      primary: validHex(v.customColors?.primary) ? v.customColors.primary : defaultTheme.customColors.primary,
+      accent: validHex(v.customColors?.accent) ? v.customColors.accent : defaultTheme.customColors.accent,
+      background: validHex(v.customColors?.background) ? v.customColors.background : defaultTheme.customColors.background,
+    },
     font: ["romantic", "modern", "classic"].includes(v.font ?? "") ? v.font as WeddingTheme["font"] : "romantic",
     icons: ["minimal", "floral", "classic"].includes(v.icons ?? "") ? v.icons as WeddingTheme["icons"] : "minimal",
     heroAlign: v.heroAlign === "left" ? "left" : "center",
     sections: [...sections, ...weddingSections.filter(item => !sections.includes(item))],
     hidden: Array.isArray(v.hidden) ? v.hidden.filter((item): item is WeddingSection => weddingSections.includes(item as WeddingSection)) : [],
   };
+}
+function validHex(value: unknown): value is string { return typeof value === "string" && /^#[0-9a-f]{6}$/i.test(value); }
+function readableOn(hex: string) {
+  const rgb = [1, 3, 5].map(index => Number.parseInt(hex.slice(index, index + 2), 16) / 255);
+  const linear = rgb.map(value => value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4);
+  return (0.2126 * (linear[0] ?? 0) + 0.7152 * (linear[1] ?? 0) + 0.0722 * (linear[2] ?? 0)) > 0.48 ? "#18201b" : "#ffffff";
+}
+export function weddingThemeStyle(theme: WeddingTheme) {
+  if (theme.palette !== "custom") return undefined;
+  return {
+    "--background": theme.customColors.background,
+    "--foreground": readableOn(theme.customColors.background),
+    "--primary": theme.customColors.primary,
+    "--primary-foreground": readableOn(theme.customColors.primary),
+    "--accent": theme.customColors.accent,
+    "--accent-foreground": readableOn(theme.customColors.accent),
+    "--secondary": `color-mix(in oklab, ${theme.customColors.background} 86%, ${theme.customColors.primary})`,
+    "--secondary-foreground": readableOn(theme.customColors.background),
+    "--muted": `color-mix(in oklab, ${theme.customColors.background} 92%, ${theme.customColors.primary})`,
+    "--muted-foreground": `color-mix(in oklab, ${readableOn(theme.customColors.background)} 66%, transparent)`,
+    "--border": `color-mix(in oklab, ${theme.customColors.primary} 25%, ${theme.customColors.background})`,
+    "--input": `color-mix(in oklab, ${theme.customColors.primary} 25%, ${theme.customColors.background})`,
+    "--ring": theme.customColors.accent,
+  } as Record<string, string>;
 }
 export function formatWeddingDate(value: string) {
   const date = new Date(value);
