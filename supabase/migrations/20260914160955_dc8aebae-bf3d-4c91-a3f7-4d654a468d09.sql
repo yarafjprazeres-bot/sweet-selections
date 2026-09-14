@@ -1,0 +1,3 @@
+CREATE POLICY "Authenticated users view published weddings" ON public.weddings FOR SELECT TO authenticated USING (is_published = true);
+CREATE POLICY "Authenticated users view published gifts" ON public.gifts FOR SELECT TO authenticated USING (EXISTS (SELECT 1 FROM public.weddings w WHERE w.id = wedding_id AND w.is_published = true));
+CREATE POLICY "Authenticated visitors submit RSVPs" ON public.rsvps FOR INSERT TO authenticated WITH CHECK (EXISTS (SELECT 1 FROM public.weddings w WHERE w.id = wedding_id AND w.owner_id = owner_id AND w.is_published = true));
