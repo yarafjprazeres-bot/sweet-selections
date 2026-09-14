@@ -79,7 +79,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Laço — Seu casamento, do seu jeito" },
-      { name: "description", content: "Crie seu site de casamento, organize convidados e acompanhe confirmações em um só lugar." },
+      { name: "description", content: "Crie seu site de casamento, personalize cada detalhe e acompanhe confirmações em um só lugar." },
       { name: "author", content: "Laço" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
