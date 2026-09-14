@@ -18,6 +18,7 @@ export type Wedding = {
   ceremony: Venue; reception: Venue; pix: Pix; is_published: boolean;
   partner_one_name: string; partner_one_role: string; partner_two_name: string;
   partner_two_role: string; setup_completed: boolean; theme: WeddingTheme;
+  total_guests: number;
 };
 
 export const fallbackVenue: Venue = { local: "", data: "", hora: "", endereco: "", maps_url: "", fotos: [] };
