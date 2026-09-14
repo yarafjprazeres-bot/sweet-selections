@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedPainelRouteImport } from './routes/_authenticated/painel'
+import { Route as CasamentoRouteImport } from './routes/casamento.'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -33,15 +34,22 @@ const AuthenticatedPainelRoute = AuthenticatedPainelRouteImport.update({
   path: '/painel',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const CasamentoRoute = CasamentoRouteImport.update({
+  id: '/casamento/',
+  path: '/casamento/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/casamento/': typeof CasamentoRoute
   '/painel': typeof AuthenticatedPainelRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/casamento': typeof CasamentoRoute
   '/painel': typeof AuthenticatedPainelRoute
 }
 export interface FileRoutesById {
@@ -49,20 +57,28 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/casamento/': typeof CasamentoRoute
   '/_authenticated/painel': typeof AuthenticatedPainelRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/painel'
+  fullPaths: '/' | '/auth' | '/casamento/' | '/painel'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/painel'
-  id: '__root__' | '/' | '/_authenticated' | '/auth' | '/_authenticated/painel'
+  to: '/' | '/auth' | '/casamento' | '/painel'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/casamento/'
+    | '/_authenticated/painel'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  CasamentoRoute: typeof CasamentoRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -95,6 +111,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPainelRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/casamento/': {
+      id: '/casamento/'
+      path: '/casamento'
+      fullPath: '/casamento/'
+      preLoaderRoute: typeof CasamentoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -113,6 +136,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  CasamentoRoute: CasamentoRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
