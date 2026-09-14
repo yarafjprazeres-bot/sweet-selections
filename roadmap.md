@@ -11,3 +11,4 @@
 - [ ] Criar função e acesso administrativo seguro
 - [ ] Criar página administrativa com visão dos casais
 - [ ] Verificar fluxos novos e permissões
+- [ ] Adicionar criação de conta por e-mail e senha
