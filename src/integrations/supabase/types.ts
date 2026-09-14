@@ -14,13 +14,237 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      gifts: {
+        Row: {
+          created_at: string
+          id: string
+          image_url: string | null
+          is_given: boolean
+          name: string
+          owner_id: string
+          price: number
+          updated_at: string
+          wedding_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          is_given?: boolean
+          name: string
+          owner_id: string
+          price: number
+          updated_at?: string
+          wedding_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          is_given?: boolean
+          name?: string
+          owner_id?: string
+          price?: number
+          updated_at?: string
+          wedding_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gifts_wedding_id_fkey"
+            columns: ["wedding_id"]
+            isOneToOne: false
+            referencedRelation: "weddings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      guests: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          normalized_name: string
+          owner_id: string
+          wedding_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          normalized_name: string
+          owner_id: string
+          wedding_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          normalized_name?: string
+          owner_id?: string
+          wedding_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guests_wedding_id_fkey"
+            columns: ["wedding_id"]
+            isOneToOne: false
+            referencedRelation: "weddings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      rsvps: {
+        Row: {
+          attending: boolean
+          child_names: string[]
+          children_count: number
+          created_at: string
+          guest_count: number
+          guest_names: string[]
+          helper_names: string[]
+          helpers_count: number
+          id: string
+          name: string
+          on_list: boolean
+          owner_id: string
+          updated_at: string
+          wedding_id: string
+          whatsapp: string
+        }
+        Insert: {
+          attending: boolean
+          child_names?: string[]
+          children_count?: number
+          created_at?: string
+          guest_count?: number
+          guest_names?: string[]
+          helper_names?: string[]
+          helpers_count?: number
+          id?: string
+          name: string
+          on_list?: boolean
+          owner_id: string
+          updated_at?: string
+          wedding_id: string
+          whatsapp?: string
+        }
+        Update: {
+          attending?: boolean
+          child_names?: string[]
+          children_count?: number
+          created_at?: string
+          guest_count?: number
+          guest_names?: string[]
+          helper_names?: string[]
+          helpers_count?: number
+          id?: string
+          name?: string
+          on_list?: boolean
+          owner_id?: string
+          updated_at?: string
+          wedding_id?: string
+          whatsapp?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rsvps_wedding_id_fkey"
+            columns: ["wedding_id"]
+            isOneToOne: false
+            referencedRelation: "weddings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      weddings: {
+        Row: {
+          ceremony: Json
+          couple_names: string
+          cover_photo: string
+          created_at: string
+          date_text: string
+          id: string
+          is_published: boolean
+          owner_id: string
+          pix: Json
+          reception: Json
+          slug: string
+          story: string
+          theme: Json
+          updated_at: string
+          wedding_at: string
+          whatsapp: string
+        }
+        Insert: {
+          ceremony?: Json
+          couple_names?: string
+          cover_photo?: string
+          created_at?: string
+          date_text?: string
+          id?: string
+          is_published?: boolean
+          owner_id: string
+          pix?: Json
+          reception?: Json
+          slug: string
+          story?: string
+          theme?: Json
+          updated_at?: string
+          wedding_at?: string
+          whatsapp?: string
+        }
+        Update: {
+          ceremony?: Json
+          couple_names?: string
+          cover_photo?: string
+          created_at?: string
+          date_text?: string
+          id?: string
+          is_published?: boolean
+          owner_id?: string
+          pix?: Json
+          reception?: Json
+          slug?: string
+          story?: string
+          theme?: Json
+          updated_at?: string
+          wedding_at?: string
+          whatsapp?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      check_guest_name: {
+        Args: { candidate: string; target_wedding: string }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never
