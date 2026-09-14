@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Countdown } from "@/components/wedding/countdown";
-import { asPix, asTheme, asVenue, buildPixPayload, resolveWeddingPhoto, type Venue, type Wedding, type WeddingSection } from "@/lib/wedding";
+import { asPix, asTheme, asVenue, buildPixPayload, resolveWeddingPhoto, weddingThemeStyle, type Venue, type Wedding, type WeddingSection } from "@/lib/wedding";
 import type { Tables } from "@/integrations/supabase/types";
 
 type GiftRow=Tables<"gifts"> & {display_url?:string};

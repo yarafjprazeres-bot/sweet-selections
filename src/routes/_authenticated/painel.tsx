@@ -11,7 +11,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { PhotoUpload } from "@/components/wedding/photo-upload";
-import { asPix, asTheme, asVenue, defaultTheme, formatWeddingDate, slugify, weddingSections, type Venue, type Wedding, type WeddingSection, type WeddingTheme } from "@/lib/wedding";
+import { asPix, asTheme, asVenue, defaultTheme, formatWeddingDate, slugify, weddingThemeStyle, type Venue, type Wedding, type WeddingSection, type WeddingTheme } from "@/lib/wedding";
 import type { Json, Tables } from "@/integrations/supabase/types";
 
 type RSVP = Tables<"rsvps">; type GiftRow = Tables<"gifts">;
