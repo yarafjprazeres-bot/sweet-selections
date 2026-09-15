@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      gift_messages: {
+        Row: {
+          created_at: string
+          gift_id: string
+          id: string
+          message: string | null
+          owner_id: string
+          sender_name: string
+          wedding_id: string
+        }
+        Insert: {
+          created_at?: string
+          gift_id: string
+          id?: string
+          message?: string | null
+          owner_id: string
+          sender_name: string
+          wedding_id: string
+        }
+        Update: {
+          created_at?: string
+          gift_id?: string
+          id?: string
+          message?: string | null
+          owner_id?: string
+          sender_name?: string
+          wedding_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gift_messages_gift_id_fkey"
+            columns: ["gift_id"]
+            isOneToOne: true
+            referencedRelation: "gifts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gift_messages_wedding_id_fkey"
+            columns: ["wedding_id"]
+            isOneToOne: false
+            referencedRelation: "weddings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       gifts: {
         Row: {
           created_at: string
@@ -128,6 +173,7 @@ export type Database = {
           helper_names: string[]
           helpers_count: number
           id: string
+          message: string | null
           name: string
           on_list: boolean
           owner_id: string
@@ -145,6 +191,7 @@ export type Database = {
           helper_names?: string[]
           helpers_count?: number
           id?: string
+          message?: string | null
           name: string
           on_list?: boolean
           owner_id: string
@@ -162,6 +209,7 @@ export type Database = {
           helper_names?: string[]
           helpers_count?: number
           id?: string
+          message?: string | null
           name?: string
           on_list?: boolean
           owner_id?: string
