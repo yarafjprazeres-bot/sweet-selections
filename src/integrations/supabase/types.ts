@@ -220,7 +220,6 @@ export type Database = {
           slug: string
           story: string
           theme: Json
-          total_guests: number
           updated_at: string
           wedding_at: string
           whatsapp: string
@@ -244,7 +243,6 @@ export type Database = {
           slug: string
           story?: string
           theme?: Json
-          total_guests?: number
           updated_at?: string
           wedding_at?: string
           whatsapp?: string
@@ -268,7 +266,6 @@ export type Database = {
           slug?: string
           story?: string
           theme?: Json
-          total_guests?: number
           updated_at?: string
           wedding_at?: string
           whatsapp?: string
