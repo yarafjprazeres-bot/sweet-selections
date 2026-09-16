@@ -10,9 +10,9 @@
 - [x] Adicionar link seguro do Google Maps aos locais
 - [x] Criar função e acesso administrativo seguro
 - [x] Criar página administrativa com visão dos casais
-- [ ] Verificar fluxos novos e permissões
+- [x] Verificar fluxos novos e permissões
 - [x] Adicionar criação de conta por e-mail e senha
-- [ ] Adicionar recado opcional na confirmação de presença
-- [ ] Adicionar recado e identificação ao escolher presente
-- [ ] Criar mural privado de recados no painel do casal
-- [ ] Verificar envio e visualização dos recados
+- [x] Adicionar recado opcional na confirmação de presença
+- [x] Adicionar recado e identificação ao escolher presente
+- [x] Criar mural privado de recados no painel do casal
+- [x] Verificar envio e visualização dos recados
