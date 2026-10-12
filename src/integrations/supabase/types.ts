@@ -264,6 +264,7 @@ export type Database = {
           partner_two_role: string
           pix: Json
           reception: Json
+          rsvp_deadline: string | null
           setup_completed: boolean
           slug: string
           story: string
@@ -288,6 +289,7 @@ export type Database = {
           partner_two_role?: string
           pix?: Json
           reception?: Json
+          rsvp_deadline?: string | null
           setup_completed?: boolean
           slug: string
           story?: string
@@ -312,6 +314,7 @@ export type Database = {
           partner_two_role?: string
           pix?: Json
           reception?: Json
+          rsvp_deadline?: string | null
           setup_completed?: boolean
           slug?: string
           story?: string
