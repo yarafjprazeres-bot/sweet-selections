@@ -9,11 +9,28 @@ import { Label } from "@/components/ui/label";
 import hero from "@/assets/wedding-hero.jpg";
 
 export const Route = createFileRoute("/auth")({
-  head: () => ({ meta: [{ title: "Entrar — Laço" }, { name: "description", content: "Acesse a área privada do seu casamento." }, { property: "og:title", content: "Entrar — Laço" }, { property: "og:description", content: "Acesse a área privada do seu casamento." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
+  head: () => ({
+    meta: [
+      { title: "Entrar — Laço" },
+      { name: "description", content: "Acesse a área privada do seu casamento." },
+      { property: "og:title", content: "Entrar — Laço" },
+      { property: "og:description", content: "Acesse a área privada do seu casamento." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: AuthPage,
 });
+
 function AuthPage() {
-  const navigate = useNavigate(); const [loading, setLoading] = useState(false); const [error, setError] = useState(""); const [notice,setNotice]=useState(""); const [mode,setMode]=useState<"login"|"signup">("login"); const [email,setEmail]=useState(""); const [password,setPassword]=useState("");
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
+  const [mode, setMode] = useState<"login" | "signup">("login");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   useEffect(() => {
     let active = true;
     const openPanel = async () => {
@@ -24,9 +41,181 @@ function AuthPage() {
     const { data } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_IN" && session?.user) void navigate({ to: "/painel", replace: true });
     });
-    return () => { active = false; data.subscription.unsubscribe(); };
+    return () => {
+      active = false;
+      data.subscription.unsubscribe();
+    };
   }, [navigate]);
-  async function enter() { setLoading(true); setError(""); const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: `${window.location.origin}/auth`, extraParams: { prompt: "select_account" } }); if (result.error) { setError("Não foi possível entrar agora. Tente novamente."); setLoading(false); return; } if (!result.redirected) await navigate({ to: "/painel", replace: true }); }
-  async function submitEmail(event:React.FormEvent){event.preventDefault();setLoading(true);setError("");setNotice("");if(mode==="signup"){const {data,error:authError}=await supabase.auth.signUp({email,password,options:{emailRedirectTo:`${window.location.origin}/auth`}});if(authError){setError("Não foi possível criar a conta. Confira os dados e tente novamente.");setLoading(false);return;}if(!data.session){setNotice("Conta criada. Confira seu e-mail para confirmar o acesso.");setLoading(false);return;}await navigate({to:"/painel",replace:true});return;}const {data,error:authError}=await supabase.auth.signInWithPassword({email,password});if(authError||!data.user){setError("E-mail ou senha incorretos.");setLoading(false);return;}await navigate({to:"/painel",replace:true});}
-  return <main className="grid min-h-screen lg:grid-cols-2"><div className="relative hidden lg:block"><img src={hero} alt="Casal caminhando em um jardim" className="absolute inset-0 h-full w-full object-cover"/><div className="absolute inset-0 bg-foreground/20"/></div><div className="flex items-center justify-center bg-background px-6 py-12"><div className="w-full max-w-md animate-rise"><a href="/" className="mb-10 block font-serif text-3xl text-primary">Laço</a><p className="mb-3 text-xs font-semibold uppercase text-accent">Área do casal</p><h1 className="text-5xl leading-none text-foreground">Seu casamento,<br/>em boas mãos.</h1><p className="mt-5 text-muted-foreground">{mode==="login"?"Entre para editar o site e acompanhar as confirmações.":"Crie sua conta e deixe o site do casal pronto."}</p><div className="mt-8 grid grid-cols-2 border border-border p-1"><Button type="button" variant={mode==="login"?"default":"ghost"} onClick={()=>{setMode("login");setError("");setNotice("")}}>Entrar</Button><Button type="button" variant={mode==="signup"?"default":"ghost"} onClick={()=>{setMode("signup");setError("");setNotice("")}}>Criar conta</Button></div><form className="mt-6 space-y-4" onSubmit={submitEmail}><div><Label htmlFor="email">E-mail</Label><Input id="email" type="email" autoComplete="email" className="mt-2 h-12" value={email} onChange={event=>setEmail(event.target.value)} required/></div><div><Label htmlFor="password">Senha</Label><Input id="password" type="password" minLength={6} autoComplete={mode==="signup"?"new-password":"current-password"} className="mt-2 h-12" value={password} onChange={event=>setPassword(event.target.value)} required/></div><Button type="submit" disabled={loading} size="lg" className="h-12 w-full">{loading?<LoaderCircle className="animate-spin"/>:<Mail/>}{mode==="login"?"Entrar com e-mail":"Criar minha conta"}</Button></form><div className="my-6 flex items-center gap-3"><span className="h-px flex-1 bg-border"/><span className="text-xs uppercase text-muted-foreground">ou</span><span className="h-px flex-1 bg-border"/></div><Button onClick={enter} disabled={loading} size="lg" variant="outline" className="h-12 w-full"><Chrome/>Continuar com Google</Button>{error&&<p className="mt-4 text-sm text-destructive">{error}</p>}{notice&&<p className="mt-4 text-sm text-primary">{notice}</p>}<p className="mt-6 text-center text-xs text-muted-foreground">Acesso seguro. Seus dados ficam separados dos demais casais.</p></div></div></main>;
+
+  async function enter() {
+    setLoading(true);
+    setError("");
+    const result = await lovable.auth.signInWithOAuth("google", {
+      redirect_uri: `${window.location.origin}/auth`,
+      extraParams: { prompt: "select_account" },
+    });
+    if (result.error) {
+      setError("Não foi possível entrar agora. Tente novamente.");
+      setLoading(false);
+      return;
+    }
+    if (!result.redirected) await navigate({ to: "/painel", replace: true });
+  }
+
+  async function submitEmail(event: React.FormEvent) {
+    event.preventDefault();
+    setLoading(true);
+    setError("");
+    setNotice("");
+    if (mode === "signup") {
+      const { data, error: authError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { emailRedirectTo: `${window.location.origin}/auth` },
+      });
+      if (authError) {
+        setError("Não foi possível criar a conta. Confira os dados e tente novamente.");
+        setLoading(false);
+        return;
+      }
+      if (!data.session) {
+        setNotice("Conta criada. Confira seu e-mail para confirmar o acesso.");
+        setLoading(false);
+        return;
+      }
+      await navigate({ to: "/painel", replace: true });
+      return;
+    }
+    const { data, error: authError } = await supabase.auth.signInWithPassword({ email, password });
+    if (authError || !data.user) {
+      setError("E-mail ou senha incorretos.");
+      setLoading(false);
+      return;
+    }
+    await navigate({ to: "/painel", replace: true });
+  }
+
+  async function forgotPassword() {
+    if (!email) {
+      setError("Digite seu e-mail para receber o link de recuperação.");
+      return;
+    }
+    setLoading(true);
+    setError("");
+    setNotice("");
+    const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setLoading(false);
+    if (resetError) {
+      setError("Não foi possível enviar o link de recuperação. Tente novamente.");
+      return;
+    }
+    setNotice("Link de recuperação enviado. Confira seu e-mail.");
+  }
+
+  return (
+    <main className="grid min-h-screen lg:grid-cols-2">
+      <div className="relative hidden lg:block">
+        <img src={hero} alt="Casal caminhando em um jardim" className="absolute inset-0 h-full w-full object-cover" />
+        <div className="absolute inset-0 bg-foreground/20" />
+      </div>
+      <div className="flex items-center justify-center bg-background px-6 py-12">
+        <div className="w-full max-w-md animate-rise">
+          <a href="/" className="mb-10 block font-serif text-3xl text-primary">
+            Laço
+          </a>
+          <p className="mb-3 text-xs font-semibold uppercase text-accent">Área do casal</p>
+          <h1 className="text-5xl leading-none text-foreground">
+            Seu casamento,
+            <br />
+            em boas mãos.
+          </h1>
+          <p className="mt-5 text-muted-foreground">
+            {mode === "login"
+              ? "Entre para editar o site e acompanhar as confirmações."
+              : "Crie sua conta e deixe o site do casal pronto."}
+          </p>
+          <div className="mt-8 grid grid-cols-2 border border-border p-1">
+            <Button
+              type="button"
+              variant={mode === "login" ? "default" : "ghost"}
+              onClick={() => {
+                setMode("login");
+                setError("");
+                setNotice("");
+              }}
+            >
+              Entrar
+            </Button>
+            <Button
+              type="button"
+              variant={mode === "signup" ? "default" : "ghost"}
+              onClick={() => {
+                setMode("signup");
+                setError("");
+                setNotice("");
+              }}
+            >
+              Criar conta
+            </Button>
+          </div>
+          <form className="mt-6 space-y-4" onSubmit={submitEmail}>
+            <div>
+              <Label htmlFor="email">E-mail</Label>
+              <Input
+                id="email"
+                type="email"
+                autoComplete="email"
+                className="mt-2 h-12"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                required
+              />
+            </div>
+            <div>
+              <Label htmlFor="password">Senha</Label>
+              <Input
+                id="password"
+                type="password"
+                minLength={6}
+                autoComplete={mode === "signup" ? "new-password" : "current-password"}
+                className="mt-2 h-12"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                required
+              />
+            </div>
+            <Button type="submit" disabled={loading} size="lg" className="h-12 w-full">
+              {loading ? <LoaderCircle className="animate-spin" /> : <Mail />}
+              {mode === "login" ? "Entrar com e-mail" : "Criar minha conta"}
+            </Button>
+            {mode === "login" && (
+              <button
+                type="button"
+                onClick={forgotPassword}
+                className="mx-auto block text-xs text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+              >
+                Esqueci minha senha
+              </button>
+            )}
+          </form>
+          <div className="my-6 flex items-center gap-3">
+            <span className="h-px flex-1 bg-border" />
+            <span className="text-xs uppercase text-muted-foreground">ou</span>
+            <span className="h-px flex-1 bg-border" />
+          </div>
+          <Button onClick={enter} disabled={loading} size="lg" variant="outline" className="h-12 w-full">
+            <Chrome />
+            Continuar com Google
+          </Button>
+          {error && <p className="mt-4 text-sm text-destructive">{error}</p>}
+          {notice && <p className="mt-4 text-sm text-primary">{notice}</p>}
+          <p className="mt-6 text-center text-xs text-muted-foreground">
+            Acesso seguro. Seus dados ficam separados dos demais casais.
+          </p>
+        </div>
+      </div>
+    </main>
+  );
 }
