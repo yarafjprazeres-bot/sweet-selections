@@ -14,7 +14,7 @@ export type WeddingTheme = {
 };
 export type Wedding = {
   id: string; owner_id: string; slug: string; couple_names: string; wedding_at: string;
-  date_text: string; cover_photo: string; story: string; whatsapp: string;
+  date_text: string; cover_photo: string; story: string; whatsapp: string; rsvp_deadline: string | null;
   ceremony: Venue; reception: Venue; pix: Pix; is_published: boolean;
   partner_one_name: string; partner_one_role: string; partner_two_name: string;
   partner_two_role: string; setup_completed: boolean; theme: WeddingTheme;
